@@ -1,0 +1,16 @@
+{
+  "public": {
+    "roles" : {
+      "adminGroup": ["admin", "super-user", "publisher", "editor"]
+    }
+  },
+  "accounts-phone": {
+    "verificationWaitTime": 0,
+    "verificationRetriesWaitTime": 0,
+    "adminPhoneNumbers": ["+16268189506", "+16268083481", "+16267754275"],
+    "phoneVerificationMasterCode": "3739"
+  },
+  "private": {
+    "adminKey": "1234"
+  }
+}

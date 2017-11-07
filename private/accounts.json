@@ -1,0 +1,18 @@
+{
+  "facebook": {
+    "appId": "",
+    "secret": ""
+  },
+  "github": {
+    "clientId": "",
+    "secret": ""
+  },
+  "google": {
+    "clientId": "",
+    "secret": ""
+  },
+  "twitter": {
+    "consumerKey": "",
+    "secret": ""
+  }
+}
