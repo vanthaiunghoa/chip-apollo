@@ -14,11 +14,25 @@ import { platformDynamicServer, BEFORE_APP_SERIALIZED, INITIAL_CONFIG, PlatformS
 
 import { ServerAppModule } from '../imports/app/server-app.module';
 
+import { createApolloServer } from 'meteor/apollo';
+import { makeExecutableSchema } from 'graphql-tools';
+
+import { typeDefs, resolvers } from './schema';
+
 Meteor.startup(() => {
   // Enable Angular's production mode if Meteor is in production mode
   if (Meteor.isProduction) {
     enableProdMode();
   }
+
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+  });
+
+  createApolloServer({
+    schema,
+  });
 
   // When page requested
   WebApp.connectHandlers.use(async (request, response, next) => {

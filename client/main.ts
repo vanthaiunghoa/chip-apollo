@@ -9,10 +9,10 @@ import { meteorClientConfig } from 'meteor/apollo';
 
 // import App from '/imports/ui/App';
 
-const client = new ApolloClient(meteorClientConfig());
+// const client = new ApolloClient(meteorClientConfig());
 
 Meteor.startup(() => {
-  console.log(client);
+  // console.log(client);
   if (Meteor.isProduction) {
     enableProdMode();
   }
