@@ -1,21 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-
-import { Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
-
-import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
-import ApolloClient from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
-import HttpLink from 'apollo-link-http';
-import Cache from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { createHttpLink } from 'apollo-link-http';
-import { HttpHeaders } from '@angular/common/http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
+import { Subscription } from 'rxjs';
+import gql from 'graphql-tag';
 
 @Component({
   selector: 'app',
@@ -44,25 +38,6 @@ export class AppComponent {
     // use with apollo-client
     const link = middlewareLink.concat(httpLink);
 
-
-
-    //  const httpLink = new HttpLink({ uri: '/graphql' });
-    //  const middlewareLink = new ApolloLink((operation, forward) => {
-    //    operation.setContext({
-    //      headers: {
-    //        'meteor-login-token': Accounts._storedLoginToken(),
-    //      },
-    //    });
-    //    return forward(operation);
-    //  });
-    //
-    //  const link = middlewareLink.concat(httpLink);
-
-    // const client = new ApolloClient({
-    //   link,
-    //   cache: new InMemoryCache().restore(window.__APOLLO_STATE__)
-    // });
-    //
     // console.log(client);
     //  console.log(this.apollo);
     const query = gql`{user {_id}}`;
@@ -76,10 +51,8 @@ export class AppComponent {
     //     }
     // `;
     // const q = client.query({query: query}).then((data)=> console.log(data)).catch(error => console.error(error));
-    const q = this.apollo.query({query: query});
+    const q = this.apollo.query({ query: query });
     q.subscribe((d) => { console.log(d); });
-    // console.log(q);
-
 
     //  this.apollo.watchQuery<any>({
     //    query: CurrentUserForProfile
