@@ -10,6 +10,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApolloModule, Apollo } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloLink, concat } from 'apollo-link';
+import { HttpHeaders } from '@angular/common/http';
+import { createHttpLink } from 'apollo-link-http';
 
 @NgModule({
   imports: [
@@ -49,8 +52,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
       }
     ]),
     HttpClientModule, // provides HttpClient for HttpLink
-   ApolloModule,
-   HttpLinkModule
+    ApolloModule,
+    HttpLinkModule
   ],
   declarations: [
     AppComponent,
@@ -66,11 +69,32 @@ export class AppModule {
     apollo: Apollo,
     httpLink: HttpLink
   ) {
+    // const httpLink = new HttpLink({ uri: '/graphql' });
+    // const http = httpLink.create({ uri: '/graphql' });
+    // const authMiddleware = new ApolloLink((operation, forward) => {
+    //   operation.setContext({
+    //     headers: new HttpHeaders().set('meteor-login-token', Accounts._storedLoginToken())
+    //   });
+    //   return forward(operation);
+    // });
+
+    const http = createHttpLink({ uri: '/graphql' });
+    const middlewareLink = new ApolloLink((operation, forward) => {
+      operation.setContext({
+        headers: new HttpHeaders().set('meteor-login-token', Accounts._storedLoginToken())
+      });
+      return forward(operation);
+    })
+
+    // use with apollo-client
+    const link = middlewareLink.concat(http);
+
     apollo.create({
       // By default, this client will send queries to the
       // `/graphql` endpoint on the same host
-      link: httpLink.create({ uri: 'https://localhost:3000/graphql' }),
-      cache: new InMemoryCache()
+      // link: httpLink.create({ uri: '/graphql' }),
+      link: link,
+      cache: new InMemoryCache().restore(window.__APOLLO_STATE__)
     });
   }
- }
+}
