@@ -6,6 +6,11 @@ import { AppComponent } from './app.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
+import { HttpClientModule } from '@angular/common/http';
+import { ApolloModule, Apollo } from 'apollo-angular';
+import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+
 @NgModule({
   imports: [
     // Transition between server and client
@@ -42,7 +47,10 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
           title: '404 Page Not Found'
         }
       }
-    ])
+    ]),
+    HttpClientModule, // provides HttpClient for HttpLink
+   ApolloModule,
+   HttpLinkModule
   ],
   declarations: [
     AppComponent,
@@ -53,4 +61,16 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     AppComponent
   ]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    apollo: Apollo,
+    httpLink: HttpLink
+  ) {
+    apollo.create({
+      // By default, this client will send queries to the
+      // `/graphql` endpoint on the same host
+      link: httpLink.create({ uri: 'https://localhost:3000/graphql' }),
+      cache: new InMemoryCache()
+    });
+  }
+ }

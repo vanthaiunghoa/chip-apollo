@@ -3,6 +3,10 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 import { Subscription } from 'rxjs';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+
+const CurrentUserForProfile = gql`{user}`;
 
 @Component({
   selector: 'app',
@@ -14,8 +18,25 @@ export class AppComponent {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title
-  ) { }
+    private titleService: Title,
+    private apollo: Apollo
+  ) {
+      console.log(apollo);
+      //  apollo.query({query: gql`{ user }`}).then(console.log);
+
+   }
+
+   ngOnInit() {
+   this.apollo.watchQuery<any>({
+     query: CurrentUserForProfile
+   })
+     .valueChanges
+     .subscribe(({data}) => {
+       console.log(data);
+      //  this.loading = data.loading;
+      //  this.currentUser = data.currentUser;
+     });
+ }
   // ngOnInit() {
   //   this.titleChangeSubscription =
   //     this.router.events
