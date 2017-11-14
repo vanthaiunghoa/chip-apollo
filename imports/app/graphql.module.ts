@@ -38,7 +38,7 @@ export class GraphQLModule {
 
     const middlewareLink = new ApolloLink((operation, forward) => {
       operation.setContext({
-        headers: new HttpHeaders().set('meteor-login-token', Accounts._storedLoginToken() || '')
+        headers: new HttpHeaders().set('meteor-login-token', Accounts['_storedLoginToken']() || '')
       });
       return forward(operation);
     })

@@ -27,20 +27,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    const httpLink = createHttpLink({ uri: '/graphql' });
-    const middlewareLink = new ApolloLink((operation, forward) => {
-      operation.setContext({
-        headers: new HttpHeaders().set('meteor-login-token', Accounts._storedLoginToken())
-      });
-      return forward(operation);
-    })
-
-    // use with apollo-client
-    const link = middlewareLink.concat(httpLink);
-
-    // console.log(client);
-    //  console.log(this.apollo);
-    const query = gql`{user {_id}}`;
+    const query = gql`query {user {_id}}`;
     // const query = gql`
     // query TodoApp {
     //       todos {
@@ -51,8 +38,18 @@ export class AppComponent {
     //     }
     // `;
     // const q = client.query({query: query}).then((data)=> console.log(data)).catch(error => console.error(error));
-    const q = this.apollo.query({ query: query });
-    q.subscribe((d) => { console.log(d); });
+
+    // const q = this.apollo.query({ query: query });
+    // q.subscribe((d) => { console.log(d); });
+
+    this.apollo.watchQuery<any>({ query: query })
+      .valueChanges //rxjs
+      .subscribe(({ data }) => {
+        console.log(data);
+        return data.feed;
+        //  this.loading = data.loading;
+        //  this.currentUser = data.currentUser;
+      });
 
     //  this.apollo.watchQuery<any>({
     //    query: CurrentUserForProfile
