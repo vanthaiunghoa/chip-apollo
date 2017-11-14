@@ -1,11 +1,15 @@
-import Book from './book.schema';
+import Book from '../books/book.schema';
 
 const Author = `
   type Author {
-    id: Int!
+    id: Int
     firstName: String
     lastName: String
     books: [Book]
+  }
+
+  extend type Mutation {
+    createAuthor(firstName: String, lastName: String): Author
   }
 `;
 

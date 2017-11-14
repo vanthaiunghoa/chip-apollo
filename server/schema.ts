@@ -1,7 +1,7 @@
 // import { Random } from 'meteor/random';
 import { makeExecutableSchema } from 'graphql-tools';
-import Author from './graphql/schemas/author.schema';
-import resolvers from './graphql/resolvers/root.resolver';
+import Author from './graphql/authors/author.schema';
+import resolvers from './graphql/root.resolver';
 
 export const typeDefs = [Author, `
       type Email {
@@ -17,6 +17,12 @@ export const typeDefs = [Author, `
         user: User,
         author: Author
       }
+      
+      type Mutation {
+        root(id: String): String
+      }
+
+
 `];
 
 export default makeExecutableSchema({
