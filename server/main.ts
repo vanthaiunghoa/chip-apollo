@@ -27,12 +27,10 @@ Meteor.startup(() => {
 
   const schema = makeExecutableSchema({
     typeDefs,
-    resolvers,
+    resolvers
   });
 
-  createApolloServer({
-    schema,
-  });
+  createApolloServer({ schema });
 
   // When page requested
   // WebApp.connectHandlers.use(async (request, response, next) => {
