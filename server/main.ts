@@ -17,18 +17,13 @@ import { ServerAppModule } from '../imports/app/server-app.module';
 import { createApolloServer } from 'meteor/apollo';
 import { makeExecutableSchema } from 'graphql-tools';
 
-import { typeDefs, resolvers } from './schema';
+import schema from './schema';
 
 Meteor.startup(() => {
   // Enable Angular's production mode if Meteor is in production mode
   if (Meteor.isProduction) {
     enableProdMode();
   }
-
-  const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers
-  });
 
   createApolloServer({ schema });
 
